@@ -42,17 +42,15 @@ public class Program {
 			checkIn = sdf.parse(sc.next());
 			System.out.println("Data do check-out (dd/MM/yyyy) :");
 			checkOut =sdf.parse(sc.next());
+				
+				String error = reserv.updateDates(checkIn, checkOut);
 			
-			
-			
-			if(checkIn.before(now) || checkOut.before(now)) {
-				System.out.println("Error de reserva : A reserva precisa ser para datas futuras");
-			}else if (!checkOut.after(checkIn)) {
-				System.out.println("Essa data é invalida");
-			}else {
+				if(error != null) {		 
 				reserv.updateDates(checkIn, checkOut);
+				System.out.println("Essa data é invalida");
+				
+				}else {
 				System.out.println(reserv);
-			}
 			
 		}
 		}
@@ -73,4 +71,4 @@ public class Program {
 		sc.close();
 	}
 
-}
+}}
