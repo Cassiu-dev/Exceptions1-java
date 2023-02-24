@@ -4,6 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
+import model.exceptions.DomainException;
+
 public class Reservation {
 	
 	private Integer roomNumber;
@@ -13,8 +15,11 @@ public class Reservation {
 	SimpleDateFormat sdf = new SimpleDateFormat ("dd/MM/yyyy");
 	
 	
-	public Reservation(Integer roomNumber, Date checkIn, Date checkOut) {
+	public Reservation(Integer roomNumber, Date checkIn, Date checkOut) throws DomainException {
 		super();
+		if (!checkOut.after(checkIn)) {
+			throw new DomainException ("Essa data é invalida");
+		}
 		this.roomNumber = roomNumber;
 		this.checkIn = checkIn;
 		this.checkOut = checkOut;
@@ -48,17 +53,18 @@ public class Reservation {
 	}
 	
 	
-	public String updateDates(Date checkIn, Date checkOut) {
+	public void updateDates(Date checkIn, Date checkOut) throws DomainException{
 		Date now = new Date ();
 		if(checkIn.before(now) || checkOut.before(now)) {
-			return "Error de reserva : A reserva precisa ser para datas futuras";
-		}if (!checkOut.after(checkIn)) {
-			return "Essa data é invalida";}
+			throw new DomainException("Error de reserva : A reserva precisa ser para datas futuras");			
+		}
+		if (!checkOut.after(checkIn)) {
+			throw new DomainException ("Essa data é invalida");
+		}
 		
 		
 		this.checkIn = checkIn;
 		this.checkOut = checkOut;
-		return null;
 	}
 	
 	
